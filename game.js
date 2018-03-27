@@ -128,6 +128,64 @@ class Level {
       }
 
    }
+
+   obstacleAt(position, size) {
+      var checkArguments = position && size
+         && position instanceof Vector
+         && size instanceof Vector
+
+      if (!checkArguments) {
+         throw new SyntaxError("Agruments is wrong");
+      }
+
+      var wall = position.x < 0 
+         || position.y < 0
+         || position.x + size.x > this.width;
+
+      if (wall) return 'wall';
+
+      var lava = position.y + size.y > this.height;
+
+      if (lava) return 'lava';
+
+   }
+
+   noMoreActors(type) {
+      if (!type) return !this.actors.length;
+
+      for (var i = 0; i < this.actors.length; i++) {
+         if (this.actors[i].type === type) return true;
+      }
+
+      return false;
+   }
+
+   removeActor(actor) {
+      for (var i = 0; i < this.actors.length; i++) {
+         if (this.actors[i] === actor) {
+            this.actors.splice(i, 1);
+            return;
+         };
+      }
+
+   }
+
+   playerTouched(type, actor) {
+      if (type === 'lava' || type === 'fireball') {
+         this.status = 'lost';
+      } 
+
+      if (type === 'coin') {
+         this.removeActor(actor);
+      }
+
+      for (var i = 0; i < this.actors.length; i++) {
+         if (this.actors[i].type === 'coin') {
+            this.status = 'won';
+            return;
+         };
+      }
+   }
 }
 
 //other function
