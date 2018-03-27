@@ -49,9 +49,25 @@ class Actor {
       });
    }
 
+   get left() {
+      return this.pos.x;
+   }
+
+   get top() {
+      return this.pos.y;
+   }
+
+   get right() {
+      return this.pos.x + this.size.x;
+   }
+
+   get bottom() {
+      return this.pos.y + this.size.y;
+   }
+
    act() {
 
-   }   
+   }
    
 }
 
