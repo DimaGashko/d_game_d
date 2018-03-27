@@ -8,7 +8,7 @@ class Vector {
 
    plus(addVector) {
       if ( !(addVector instanceof Vector) ) {
-         throw "It's not Vector";
+         throw new SyntaxError("Agruments is wrong");
       }
 
       return new Vector(
@@ -31,7 +31,13 @@ class Actor {
       size = new Vector(1, 1), 
       speed = new Vector(0, 0)
    ) {
-      if ( !(pos instanceof Vector)) {}
+      var checkArguments = pos instanceof Vector
+         && size instanceof Vector
+         && speed instanceof Vector;
+
+      if (!checkArguments) {
+         throw new SyntaxError("Agruments is wrong");
+      }
 
       this.pos = pos;
       this.size = size;
@@ -59,7 +65,7 @@ class Level {
 
  
 
-initGameObjects();
+//initGameObjects();
 
 const level = new Level([
    new Array(3),
