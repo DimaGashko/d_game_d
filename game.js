@@ -8,7 +8,7 @@ class Vector {
 
    plus(addVector) {
       if ( !(addVector instanceof Vector) ) {
-         throw new SyntaxError("Agruments is wrong");
+         throw new SyntaxError('Можно прибавлять к вектору только вектор типа Vector');
       }
 
       return new Vector(
@@ -54,18 +54,21 @@ class Actor {
    get right() {return this.pos.x + this.size.x;}
    get bottom() {return this.pos.y + this.size.y;}
 
-   isIntersect(otherActor) {
-      if ( !(otherActor instanceof Actor) ) {
+   isIntersect(other) {
+      if ( !(other instanceof Actor) ) {
          throw new SyntaxError("Agruments is wrong");
       }
 
-      if (this === otherActor) return false;
-      return true;
+      if (this === other) return false;
+      if (other.size.x <= 0 || other.size.y <= 0) return false;
+
+      return (
+            isIntersectLines(this.left, this.right, other.left, other.right)
+         && isIntersectLines(this.top, this.bottom, other.top, other.bottom)
+      );
    }
 
-   act() {
-
-   }
+   act() {}
    
 }
 
@@ -77,7 +80,14 @@ class Level {
 
 }
 
- 
+//other function
+function isIntersectLines(a1, a2, b1, b2) {
+   //Точки должны идти по порядку
+   if (a1 > a2) [a1, a2] = [a2, a1];
+   if (b1 > b2) [b1, b2] = [b2, b1];
+
+   return !(a2 <= b1 || b2 <= a1);
+}
 
 //initGameObjects();
 
