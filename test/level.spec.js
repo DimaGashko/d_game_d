@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Класс Level', () => {
-  const Player = extend(Actor, { type: { value: 'player' }});
+  //const Player = extend(Actor, { type: { value: 'player' }});
   const Mushroom = extend(Actor, { type: { value: 'mushroom' }});
   const Gift = extend(Actor, { type: { value: 'gift' }});
   const Coin = extend(Actor, { type: { value: 'coin' }});

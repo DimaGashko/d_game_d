@@ -44,7 +44,7 @@ class Actor {
       this.speed = speed;
 
       Object.defineProperty(this, 'type', {
-         value: 'actor',
+         value: this.getType(),
          writable: false,
       });
    }
@@ -58,10 +58,12 @@ class Actor {
       if ( !(other instanceof Actor) ) {
          throw new SyntaxError("Agruments is wrong");
       }
-
+      
       if (this === other) return false;
-      if (other.size.x <= 0 || other.size.y <= 0) return false;
 
+      if (this.pos.x === other.pos.x && this.pos.y === other.pos.y 
+         && other.size.x < 0 && other.size.y < 0) return false;
+      
       return (
             isIntersectLines(this.left, this.right, other.left, other.right)
          && isIntersectLines(this.top, this.bottom, other.top, other.bottom)
@@ -69,31 +71,71 @@ class Actor {
    }
 
    act() {}
+   getType() {return 'actor'}
    
 }
 
-class Player {
+class Player extends Actor {
+   constructor(pos = new Vector()) {
+      super(
+         pos, 
+         new Vector(0.8, 1.5) 
+      );
+      
+      this.pos.y -= 0.5; 
+   }
+
+   getType() {return 'player'}
 
 }
 
 class Level {
+   constructor(grid, actors = []) {
+      this.height = (grid) ? grid.length : 0;
+      this.width = (grid && grid[0]) ? grid[0].length : 0;
+      this.status = null;
+      this.finishDelay = 1;
+      this.actors = actors;
 
+      this.player = null;
+
+      for (var i = 0; i < actors.length; i++) {
+         if (actors[i].type === 'player') {
+            this.player = actors[i];
+            break;
+         }
+      }
+
+   }
+
+   isFinished() {
+      if (this.status !== null && this.finishDelay < 0) {
+         return true;
+      }
+
+      return false;
+   }
+
+   actorAt(actor) {
+      if ( !(actor && actor instanceof Actor) ) {
+         throw new SyntaxError("Agruments is wrong");
+      }
+
+      for (var i = 0; i < this.actors.length; i++) {
+         if (actor.isIntersect(this.actors[i])) {
+            return this.actors[i];
+         }
+      }
+
+   }
 }
 
 //other function
 function isIntersectLines(a1, a2, b1, b2) {
-   //Точки должны идти по порядку
-   if (a1 > a2) [a1, a2] = [a2, a1];
-   if (b1 > b2) [b1, b2] = [b2, b1];
+   if (a1 === b1 && a2 == b2) return true;
 
-   return !(a2 <= b1 || b2 <= a1);
+   return (b1 > a1 === b1 < a2) 
+      || (b2 > a1 === b2 < a2) 
+      || (a1 > b1 === a1 < b2) 
+      || (a2 > b1 === a2 < b2);
 }
-
-//initGameObjects();
-
-const level = new Level([
-   new Array(3),
-   ['wall', 'wall', 'lava']
-]);
-
-//runLevel(level, DOMDisplay);
