@@ -147,7 +147,9 @@ class Fireball extends Actor {
    act(time, level) {
       var pos = this.getNextPosition(time);
 
-      if (!level.obstacleAt(pos, this.size)) {
+      if (level.obstacleAt(pos, this.size)) {
+            this.handleObstacle();
+      } else {
             this.pos = pos;
       }
    }
