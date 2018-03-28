@@ -284,7 +284,7 @@ describe('Класс LevelParser', () => {
     it('Создаст уровень с припятствиями из плана', () => {
       const parser = new LevelParser();
 
-      const level = parser.parse(plan);
+      const level = parser.parse(plan, 1);
 
       expect(level.grid).to.eql([
         [undefined, undefined,'wall',undefined,undefined],

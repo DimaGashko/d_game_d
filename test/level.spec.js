@@ -4,7 +4,7 @@ describe('Класс Level', () => {
   //const Player = extend(Actor, { type: { value: 'player' }});
   const Mushroom = extend(Actor, { type: { value: 'mushroom' }});
   const Gift = extend(Actor, { type: { value: 'gift' }});
-  const Coin = extend(Actor, { type: { value: 'coin' }});
+  //const Coin = extend(Actor, { type: { value: 'coin' }});
 
   let player, mushroom, giftBig, giftSmall, goldCoin, bronzeCoin;
 
