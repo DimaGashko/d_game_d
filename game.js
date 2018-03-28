@@ -158,14 +158,14 @@ class Fireball extends Actor {
 }
 
 class HorizontalFireball extends Fireball {
-   constructor() {
-      super(undefined, new Vector(2, 0));
+   constructor(pos = new Vector(0,0)) {
+      super(pos, new Vector(2, 0));
    }
 }
 
 class VerticalFireball extends Fireball {
-   constructor() {
-      super(undefined, new Vector(0, 2));
+   constructor(pos = new Vector(0, 0)) {
+      super(pos, new Vector(0, 2));
    }
 }
 
@@ -364,7 +364,7 @@ function isIntersectLines(a1, a2, b1, b2) {
 }
 
     var schema = [
-        "     v                                    ",
+        "     v     *                              ",
         " o                                        ",
         " x                                 xxxx   ",
         "                              o          o",
@@ -373,7 +373,7 @@ function isIntersectLines(a1, a2, b1, b2) {
         "  o                 o                o    ",
         "  x               = x              xxx    ",
         "  x          o o    x                     ",
-        "  x  @    *  xxxxx  x                     ",
+        "  x  @       xxxxx  x                     ",
         "  xxxxx             x         xxx         ",
         "      x!!!!!!!!!!!!!x                     ",
         "      xxxxxxxxxxxxxxx                     ",
@@ -383,6 +383,9 @@ function isIntersectLines(a1, a2, b1, b2) {
     const actorDict = {
       '@': Player,
       'o': Coin,
+      '=': HorizontalFireball,
+      '|': VerticalFireball,
+      '*': FireRain,
     }
     const parser = new LevelParser(actorDict);
     const level = parser.parse(schema);
