@@ -218,7 +218,7 @@ class Level {
 
    }
 
-   obstacleAt(position, size) {
+   obstacleAt(position, size, g) {
       var checkArguments = position && size
          && position instanceof Vector
          && size instanceof Vector
@@ -241,11 +241,11 @@ class Level {
       for (var y = 0; y < this.grid.length; y++) {
             for (var x = 0; x < this.grid[y].length; x++) {
                   var type = this.grid[y][x];
-
+             
                   if (type === 'wall' || type === 'lava') {
                         var intersect = isIntersectRect(
-                              pos.left, pos.right, pos.top, pos.bottom,
-                              x, x + 1, y, y + 1
+                              pos.left, pos.right, pos.top, pos.bottom, 
+                              x + 0.2, x + 1, y, y + 1
                         );                        
 
                         if (intersect) return type;
@@ -346,8 +346,28 @@ function isIntersectRect(ax1, ax2, ay1, ay2, bx1, bx2, by1, by2) {
 function isIntersectLines(a1, a2, b1, b2) {
    if (a1 === b1 && a2 == b2) return true;
 
-   return (b1 >= a1 === b1 <= a2) 
-      || (b2 >= a1 === b2 <= a2) 
-      || (a1 >= b1 === a1 <= b2) 
-      || (a2 >= b1 === a2 <= b2);
+   return (b1 > a1 === b1 < a2) 
+      || (b2 > a1 === b2 < a2) 
+      || (a1 > b1 === a1 < b2) 
+      || (a2 > b1 === a2 < b2);
 }
+
+
+const schema = [
+      '         ',
+      '    o    ',
+      '         ',
+      '         ',
+      '     !xxx',
+      ' @       ',
+      'xxx!     ',
+      '         '
+    ];
+    const actorDict = {
+      '@': Player
+    }
+    const parser = new LevelParser(actorDict, {
+          'o': Coin,
+    });
+    const level = parser.parse(schema);
+    runLevel(level, DOMDisplay);

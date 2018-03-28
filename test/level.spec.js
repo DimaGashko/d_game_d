@@ -228,7 +228,6 @@ describe('Класс Level', () => {
 
     it('Вернет строку wall если площадь пересекается со стеной', () => {
       const level = new Level(wallGrid);
-      console.log(wallGrid)
       const position = new Vector(0, 0);
 
       const wall = level.obstacleAt(position, size);
@@ -323,7 +322,7 @@ describe('Класс Level', () => {
       const position = new Vector(1.2, 1.5);
       const size = new Vector(0.8, 1.5);
 
-      const nothing = level.obstacleAt(position, size);
+      const nothing = level.obstacleAt(position, size, 1);
 
       expect(nothing).to.be.undefined;
     });
