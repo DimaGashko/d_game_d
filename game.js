@@ -278,6 +278,7 @@ class Level {
    playerTouched(type, actor) {
       if (type === 'lava' || type === 'fireball') {
          this.status = 'lost';
+         return;
       } 
 
       if (type === 'coin') {
