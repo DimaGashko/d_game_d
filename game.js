@@ -65,7 +65,7 @@ class Actor {
          && other.size.x < 0 && other.size.y < 0) return false;
       
       return isIntersectRect(
-            this.left, this.right, this.top, this.bottom, 
+            this.left, this.right, this.top, this.bottom,  
             other.left, other.right, other.top, other.bottom
       );
    }
@@ -284,12 +284,16 @@ class Level {
          this.removeActor(actor);
       }
 
+      var won = true;
+
       for (var i = 0; i < this.actors.length; i++) {
          if (this.actors[i].type === 'coin') {
-            this.status = 'won';
+            won = false;
             return;
          };
       }
+
+      if (won) this.status = 'won';
    }
 }
 
@@ -330,7 +334,7 @@ class LevelParser {
       return actors;
    }
 
-   parse(plan, t) {
+   parse(plan) {
       return new Level(
          this.createGrid(plan),
          this.createActors(plan)
@@ -355,12 +359,12 @@ function isIntersectLines(a1, a2, b1, b2) {
 
     var schema = [
         "     v                                    ",
-        "                                          ",
-        "                                   xxxx   ",
-        "                                          ",
+        " o                                        ",
+        " x                                 xxxx   ",
+        "                              o          o",
         "                           xxxxx          ",
         "  |xxx       w                            ",
-        "  o                 o                     ",
+        "  o                 o                o    ",
         "  x               = x              xxx    ",
         "  x          o o    x                     ",
         "  x  @    *  xxxxx  x                     ",
@@ -371,10 +375,9 @@ function isIntersectLines(a1, a2, b1, b2) {
       ];
 
     const actorDict = {
-      '@': Player
+      '@': Player,
+      'o': Coin,
     }
-    const parser = new LevelParser(actorDict, {
-          'o': Coin,
-    });
+    const parser = new LevelParser(actorDict);
     const level = parser.parse(schema);
     runLevel(level, DOMDisplay);
