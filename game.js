@@ -64,9 +64,9 @@ class Actor {
       if (this.pos.x === other.pos.x && this.pos.y === other.pos.y 
          && other.size.x < 0 && other.size.y < 0) return false;
       
-      return (
-            isIntersectLines(this.left, this.right, other.left, other.right)
-         && isIntersectLines(this.top, this.bottom, other.top, other.bottom)
+      return isIntersectRect(
+            this.left, this.right, this.top, this.bottom, 
+            other.left, other.right, other.top, other.bottom
       );
    }
 
@@ -227,16 +227,31 @@ class Level {
          throw new SyntaxError("Agruments is wrong");
       }
 
-      var wall = position.x < 0 
-         || position.y < 0
-         || position.x + size.x > this.width;
+      var pos = new Actor(position);
 
+      var wall = pos.left < 0 
+         || pos.top < 0
+         || pos.right > this.width;
       if (wall) return 'wall';
 
-      var lava = position.y + size.y > this.height;
+      if (pos.bottom > this.height) {
+            return 'lava';
+      }
 
-      if (lava) return 'lava';
+      for (var y = 0; y < this.grid.length; y++) {
+            for (var x = 0; x < this.grid[y].length; x++) {
+                  var type = this.grid[y][x];
 
+                  if (type === 'wall' || type === 'lava') {
+                        var intersect = isIntersectRect(
+                              pos.left, pos.right, pos.top, pos.bottom,
+                              x, x + 1, y, y + 1
+                        );                        
+
+                        if (intersect) return type;
+                  }
+            }
+      }
    }
 
    noMoreActors(type) {
@@ -323,11 +338,16 @@ class LevelParser {
 }
 
 //other function
+function isIntersectRect(ax1, ax2, ay1, ay2, bx1, bx2, by1, by2) {
+      return isIntersectLines(ax1, ax2, bx1, bx2)
+         && isIntersectLines(ay1, ay2, by1, by2);
+}
+
 function isIntersectLines(a1, a2, b1, b2) {
    if (a1 === b1 && a2 == b2) return true;
 
-   return (b1 > a1 === b1 < a2) 
-      || (b2 > a1 === b2 < a2) 
-      || (a1 > b1 === a1 < b2) 
-      || (a2 > b1 === a2 < b2);
+   return (b1 >= a1 === b1 <= a2) 
+      || (b2 >= a1 === b2 <= a2) 
+      || (a1 >= b1 === a1 <= b2) 
+      || (a2 >= b1 === a2 <= b2);
 }
