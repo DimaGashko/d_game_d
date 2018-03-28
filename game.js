@@ -100,7 +100,7 @@ class Coin extends Actor {
       this.springSpeed = 8;
       this.springDist = 0.07;
 
-      this.startPos = new Vector(pos.x, pos.y);
+      this.startPos = new Vector(this.pos.x, this.pos.y);
    } 
 
    updateSpring(time = 1) {
@@ -113,9 +113,10 @@ class Coin extends Actor {
 
    getNextPosition(time = 1) {
       this.updateSpring(time);
+
       return new Vector(
-         this.pos.x,
-         this.pos.y + this.getSpringVector().y,
+         this.startPos.x,
+         this.startPos.y + this.getSpringVector(time).y,
       );
    }
 
