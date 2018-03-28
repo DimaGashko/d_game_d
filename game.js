@@ -352,17 +352,23 @@ function isIntersectLines(a1, a2, b1, b2) {
       || (a2 > b1 === a2 < b2);
 }
 
+    var schema = [
+        "     v                                    ",
+        "                                          ",
+        "                                   xxxx   ",
+        "                                          ",
+        "                              xx          ",
+        "  |xxx       w                            ",
+        "  o                 o                     ",
+        "  x               = x              xxx    ",
+        "  x          o o    x                     ",
+        "  x  @    *  xxxxx  x                     ",
+        "  xxxxx             x         xxx         ",
+        "      x!!!!!!!!!!!!!x                     ",
+        "      xxxxxxxxxxxxxxx                     ",
+        "                                          "
+      ];
 
-const schema = [
-      '         ',
-      '    o    ',
-      '         ',
-      '         ',
-      '     !xxx',
-      ' @       ',
-      'xxx!     ',
-      '         '
-    ];
     const actorDict = {
       '@': Player
     }
