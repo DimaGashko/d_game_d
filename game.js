@@ -10,7 +10,7 @@ class Vector {
       if ( !(addVector instanceof Vector) ) {
          throw new SyntaxError('Можно прибавлять к вектору только вектор типа Vector');
       }
-
+ 
       return new Vector(
          this.x + addVector.x,
          this.y + addVector.y
@@ -363,30 +363,25 @@ function isIntersectLines(a1, a2, b1, b2) {
       || (a2 > b1 === a2 < b2);
 }
 
-    var schema = [
-        "     v     *                              ",
-        " o                                        ",
-        " x                                 xxxx   ",
-        "                              o          o",
-        "                           xxxxx          ",
-        "  |xxx       w                            ",
-        "  o                 o                o    ",
-        "  x               = x              xxx    ",
-        "  x          o o    x                     ",
-        "  x  @       xxxxx  x                     ",
-        "  xxxxx             x         xxx         ",
-        "      x!!!!!!!!!!!!!x                     ",
-        "      xxxxxxxxxxxxxxx                     ",
-        "                                          "
-      ];
+      const actorDict = {
+            '@': Player,
+            'o': Coin,
+            '=': HorizontalFireball,
+            '|': VerticalFireball,
+            '*': FireRain,
+      }
 
-    const actorDict = {
-      '@': Player,
-      'o': Coin,
-      '=': HorizontalFireball,
-      '|': VerticalFireball,
-      '*': FireRain,
-    }
-    const parser = new LevelParser(actorDict);
-    const level = parser.parse(schema);
-    runLevel(level, DOMDisplay);
+      loadLevels().then((json) => {
+            var schemas = JSON.parse(json);
+            start(schemas);
+      }, () => {
+            console.error('Не узадось загрузить уровни');
+      });
+
+      function start(schemas) {
+            const parser = new LevelParser(actorDict);
+
+            runGame(schemas, parser, DOMDisplay).then(() => {
+                  alert('You won!');
+            });
+      }
