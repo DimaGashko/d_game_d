@@ -145,8 +145,11 @@ class Fireball extends Actor {
    }
 
    act(time, level) {
-      var nextPos = this.getNextPosition(time);
+      var pos = this.getNextPosition(time);
 
+      if (!level.obstacleAt(pos, this.size)) {
+            this.pos = pos;
+      }
    }
 
    getType() {return 'fireball'}
@@ -219,7 +222,7 @@ class Level {
 
    }
 
-   obstacleAt(position, size, g) {
+   obstacleAt(position, size) {
       var checkArguments = position && size
          && position instanceof Vector
          && size instanceof Vector
