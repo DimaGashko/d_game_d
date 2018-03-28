@@ -284,12 +284,16 @@ class Level {
          this.removeActor(actor);
       }
 
+      var won = true;
+
       for (var i = 0; i < this.actors.length; i++) {
          if (this.actors[i].type === 'coin') {
-            this.status = 'won';
+            won = false;
             return;
          };
       }
+
+      if (won) this.status = 'won';
    }
 }
 
@@ -365,7 +369,7 @@ function isIntersectLines(a1, a2, b1, b2) {
         "  x          o o    x                     ",
         "  x  @    *  xxxxx  x                     ",
         "  xxxxx             x         xxx         ",
-        "      x!!!!!!!!!!!!!x o                   ",
+        "      x!!!!!!!!!!!!!x                     ",
         "      xxxxxxxxxxxxxxx                     ",
         "                                          "
       ];
