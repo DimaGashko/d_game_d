@@ -358,7 +358,7 @@ function isIntersectLines(a1, a2, b1, b2) {
         "                                          ",
         "                                   xxxx   ",
         "                                          ",
-        "                              xx          ",
+        "                           xxxxx          ",
         "  |xxx       w                            ",
         "  o                 o                     ",
         "  x               = x              xxx    ",
