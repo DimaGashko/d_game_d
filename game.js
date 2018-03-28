@@ -329,7 +329,7 @@ class LevelParser {
       return actors;
    }
 
-   parse(plan, t) {
+   parse(plan) {
       return new Level(
          this.createGrid(plan),
          this.createActors(plan)
@@ -354,26 +354,25 @@ function isIntersectLines(a1, a2, b1, b2) {
 
     var schema = [
         "     v                                    ",
-        "                                          ",
-        "                                   xxxx   ",
-        "                                          ",
+        " o                                        ",
+        " x                                 xxxx   ",
+        "                              o          o",
         "                              xx          ",
         "  |xxx       w                            ",
-        "  o                 o                     ",
+        "  o                 o                o    ",
         "  x               = x              xxx    ",
         "  x          o o    x                     ",
         "  x  @    *  xxxxx  x                     ",
         "  xxxxx             x         xxx         ",
-        "      x!!!!!!!!!!!!!x                     ",
+        "      x!!!!!!!!!!!!!x o                   ",
         "      xxxxxxxxxxxxxxx                     ",
         "                                          "
       ];
 
     const actorDict = {
-      '@': Player
+      '@': Player,
+      'o': Coin,
     }
-    const parser = new LevelParser(actorDict, {
-          'o': Coin,
-    });
+    const parser = new LevelParser(actorDict);
     const level = parser.parse(schema);
     runLevel(level, DOMDisplay);
