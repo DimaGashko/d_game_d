@@ -96,6 +96,8 @@ class DOMDisplay {
   }
 
   scrollPlayerIntoView() {
+    if (!player) return;
+
     var width = this.wrap.clientWidth;
     var height = this.wrap.clientHeight;
     var margin = width / 3;
@@ -105,9 +107,7 @@ class DOMDisplay {
     var top = this.wrap.scrollTop, bottom = top + height;
 
     var player = this.level.player;
-    if (!player) {
-      return;
-    }
+
     var center = player.pos.plus(player.size.times(0.5))
                    .times(scale);
 
