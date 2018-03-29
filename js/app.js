@@ -126,7 +126,7 @@ class DOMDisplay {
   }
 }
 
-var arrowCodes = {37: "left", 38: "up", 39: "right"};
+var arrowCodes = {65: "left", 87: "up", 68: "right"};
 
 function trackKeys(codes) {
   var pressed = Object.create(null);
