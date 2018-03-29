@@ -363,25 +363,25 @@ function isIntersectLines(a1, a2, b1, b2) {
       || (a2 > b1 === a2 < b2);
 }
 
-      const actorDict = {
-            '@': Player,
-            'o': Coin,
-            '=': HorizontalFireball,
-            '|': VerticalFireball,
-            '*': FireRain,
-      }
+const actorDict = {
+      '@': Player,
+      'o': Coin,
+      '=': HorizontalFireball,
+      '|': VerticalFireball,
+      '*': FireRain,
+}
 
-      loadLevels().then((json) => {
-            var schemas = JSON.parse(json);
-            start(schemas);
-      }, () => {
-            console.error('Не узадось загрузить уровни');
+loadLevels().then((json) => {
+      var schemas = JSON.parse(json);
+      start(schemas);
+}, () => {
+      console.error('Не узадось загрузить уровни');
+});
+
+function start(schemas) {
+      const parser = new LevelParser(actorDict);
+
+      runGame(schemas, parser, DOMDisplay).then(() => {
+            alert('You won!');
       });
-
-      function start(schemas) {
-            const parser = new LevelParser(actorDict);
-
-            runGame(schemas, parser, DOMDisplay).then(() => {
-                  alert('You won!');
-            });
-      }
+}
