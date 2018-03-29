@@ -4,7 +4,7 @@ function loadLevels() {
   return new Promise((done, fail) => {
     const xhr = new XMLHttpRequest();
     let url = './levels.json';
-   /* if (location.hostname !== 'localhost') {
+    /*if (location.hostname !== 'localhost') {
       url = 'https://neto-api.herokuapp.com/js/diplom/levels.json';
     }*/
     xhr.open('GET', url);
@@ -98,7 +98,7 @@ class DOMDisplay {
   scrollPlayerIntoView() {
     var width = this.wrap.clientWidth;
     var height = this.wrap.clientHeight;
-    var margin = 0//width / 3;
+    var margin = width / 3;
 
     // The viewport
     var left = this.wrap.scrollLeft, right = left + width;
