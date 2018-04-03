@@ -42,11 +42,6 @@ class Actor {
       this.pos = pos;
       this.size = size;
       this.speed = speed;
-
-      Object.defineProperty(this, 'type', {
-         value: this.getType(),
-         writable: false,
-      });
    }
 
    get left() {return this.pos.x;}
@@ -70,10 +65,12 @@ class Actor {
       );
    }
 
-   act() {}
-   getType() {return 'actor'}
-   
+   act() {}   
 }
+
+Object.defineProperty(Actor.prototype, 'type', {
+      value: 'actor',
+});
 
 class Player extends Actor {
    constructor(pos = new Vector()) {
@@ -84,10 +81,11 @@ class Player extends Actor {
       
       this.pos.y -= 0.5; 
    }
-
-   getType() {return 'player'}
-
 }
+
+Object.defineProperty(Player.prototype, 'type', {
+      value: 'player',
+});
 
 class Coin extends Actor {
    constructor(pos = new Vector()) {
@@ -123,9 +121,11 @@ class Coin extends Actor {
    act(time) {
       this.pos = this.getNextPosition(time);
    }
-
-   getType() {return 'coin'}
 }
+
+Object.defineProperty(Coin.prototype, 'type', {
+      value: 'coin',
+});
 
 class Fireball extends Actor {
    constructor(pos, speed) {
@@ -153,9 +153,11 @@ class Fireball extends Actor {
             this.pos = pos;
       }
    }
-
-   getType() {return 'fireball'}
 }
+
+Object.defineProperty(Fireball.prototype, 'type', {
+      value: 'fireball',
+});
 
 class HorizontalFireball extends Fireball {
    constructor(pos = new Vector(0,0)) {
@@ -264,10 +266,10 @@ class Level {
       if (!type) return !this.actors.length;
 
       for (var i = 0; i < this.actors.length; i++) {
-         if (this.actors[i].type === type) return true;
+         if (this.actors[i].type === type) return false;
       }
 
-      return false;
+      return true;
    }
 
    removeActor(actor) {
