@@ -31,7 +31,7 @@ class Actor {
       size = new Vector(1, 1), 
       speed = new Vector(0, 0)
    ) {
-      var checkArguments = pos instanceof Vector
+      let checkArguments = pos instanceof Vector
          && size instanceof Vector
          && speed instanceof Vector;
 
@@ -111,11 +111,7 @@ class Coin extends Actor {
 
    getNextPosition(time = 1) {
       this.updateSpring(time);
-
-      return new Vector(
-         this.startPos.x,
-         this.startPos.y + this.getSpringVector(time).y,
-      );
+      return this.startPos.plus(this.getSpringVector(time));
    }
 
    act(time) {
@@ -133,19 +129,15 @@ class Fireball extends Actor {
    }
 
    getNextPosition(time = 1) {
-      return new Vector(
-         this.pos.x + this.speed.x * time,
-         this.pos.y + this.speed.y * time
-      );
+      return this.pos.plus(this.speed.times(time));
    }
 
    handleObstacle() {
-      this.speed.x = -this.speed.x;
-      this.speed.y = -this.speed.y;
+      this.speed = this.speed.times(-1);
    }
 
    act(time, level) {
-      var pos = this.getNextPosition(time);
+      let pos = this.getNextPosition(time);
 
       if (level.obstacleAt(pos, this.size)) {
             this.handleObstacle();
@@ -179,8 +171,7 @@ class FireRain extends Fireball {
    }
 
    handleObstacle() {
-      this.pos.x = this.startPos.x;
-      this.pos.y = this.startPos.y;
+      this.pos = this.startPos.times(1);
    }
 }
 
@@ -196,7 +187,7 @@ class Level {
 
       this.player = null;
 
-      for (var i = 0; i < actors.length; i++) {
+      for (let i = 0; i < actors.length; i++) {
          if (actors[i].type === 'player') {
             this.player = actors[i];
             break;
@@ -218,7 +209,7 @@ class Level {
          throw new SyntaxError("Agruments is wrong");
       }
 
-      for (var i = 0; i < this.actors.length; i++) {
+      for (let i = 0; i < this.actors.length; i++) {
          if (actor.isIntersect(this.actors[i])) {
             return this.actors[i];
          }
@@ -227,7 +218,7 @@ class Level {
    }
 
    obstacleAt(position, size) {
-      var checkArguments = position && size
+      let checkArguments = position && size
          && position instanceof Vector
          && size instanceof Vector
 
@@ -235,9 +226,9 @@ class Level {
          throw new SyntaxError("Agruments is wrong");
       }
 
-      var pos = new Actor(position);
+      let pos = new Actor(position);
 
-      var wall = pos.left < 0 
+      let wall = pos.left < 0 
          || pos.top < 0
          || pos.right > this.width;
       if (wall) return 'wall';
@@ -246,12 +237,12 @@ class Level {
             return 'lava';
       }
 
-      for (var y = 0; y < this.grid.length; y++) {
-            for (var x = 0; x < this.grid[y].length; x++) {
-                  var type = this.grid[y][x];
+      for (let y = 0; y < this.grid.length; y++) {
+            for (let x = 0; x < this.grid[y].length; x++) {
+                  let type = this.grid[y][x];
              
                   if (type === 'wall' || type === 'lava') {
-                        var intersect = isIntersectRect(
+                        let intersect = isIntersectRect(
                               pos.left, pos.right, pos.top, pos.bottom, 
                               x + 0.2, x + 1, y, y + 1
                         );                        
@@ -265,7 +256,7 @@ class Level {
    noMoreActors(type) {
       if (!type) return !this.actors.length;
 
-      for (var i = 0; i < this.actors.length; i++) {
+      for (let i = 0; i < this.actors.length; i++) {
          if (this.actors[i].type === type) return false;
       }
 
@@ -273,7 +264,7 @@ class Level {
    }
 
    removeActor(actor) {
-      for (var i = 0; i < this.actors.length; i++) {
+      for (let i = 0; i < this.actors.length; i++) {
          if (this.actors[i] === actor) {
             this.actors.splice(i, 1);
             return;
@@ -292,9 +283,9 @@ class Level {
          this.removeActor(actor);
       }
 
-      var won = true;
+      let won = true;
 
-      for (var i = 0; i < this.actors.length; i++) {
+      for (let i = 0; i < this.actors.length; i++) {
          if (this.actors[i].type === 'coin') {
             won = false;
             return;
@@ -328,11 +319,11 @@ class LevelParser {
    }
 
    createActors(plan) {
-      var actors = [];
+      let actors = [];
       
       plan.forEach((str, y) => {
          str.split('').forEach((symbol, x) => {
-            var constr = this.actorCodes[symbol];
+            let constr = this.actorCodes[symbol];
             if ( !(typeof constr === 'function' && new constr instanceof Actor) ) return; 
 
             actors.push(new constr(new Vector(x, y)));
@@ -374,7 +365,7 @@ const actorDict = {
 }
 
 loadLevels().then((json) => {
-      var schemas = JSON.parse(json);
+      let schemas = JSON.parse(json);
       start(schemas);
 }, () => {
       console.error('Не узадось загрузить уровни');
